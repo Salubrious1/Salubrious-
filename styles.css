@@ -832,7 +832,7 @@ h2::after {
     max-width: 900px;
     margin: 0 auto;
     position: relative;
-}
+} 
 
 .video-container video {
     border-radius: 20px;
@@ -1149,4 +1149,147 @@ footer {
         width: 75%;
         background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)
     }
+}
+
+
+
+/* Show hamburger on small screens */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        width: 75%;
+        background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        padding-top: 6rem;
+        transition: var(--transition);
+        z-index: 10;
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .hamburger.toggle .line:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.toggle .line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.toggle .line:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 130px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        padding: 1rem 2rem;
+        font-size: 0.9rem;
+    }
+
+    .features-container {
+        grid-template-columns: 1fr;
+    }
+
+    .about-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-image img {
+        margin: 0 auto;
+    }
+}
+/* ✅ Make iframe videos responsive */
+.video-container iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+}
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ✅ Make comparison table scrollable on small screens */
+@media (max-width: 768px) {
+    .comparison-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* ✅ Ensure images don't overflow on small screens */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ✅ Adjust hero section padding to avoid nav overlap */
+@media (max-width: 768px) {
+    .hero {
+        padding-top: 140px;
+    }
+}
+
+/* ✅ Responsive iframe fallback fix for demo section */
+@media (max-width: 768px) {
+    .video-container iframe {
+        width: 100% !important;
+        height: auto !important;
+    }
+}
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 ratio */
+    height: 0;
+    overflow: hidden;
+    max-width: 900px;     /* You can adjust this if needed */
+    margin: 40px auto;
+    border-radius: 20px;
+    box-shadow: var(--luxury-shadow);
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
 }
