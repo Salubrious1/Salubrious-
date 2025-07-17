@@ -13,7 +13,7 @@
     <header>
         <nav>
             <div class="logo">
-                <img src="Images/logo.jpg" alt="Logo">
+                <img src="Images/logo.jpg" alt="Leaf Peaking Machine Logo">
             </div>
             <ul class="nav-links">
                 <li><a href="#product">Product</a></li>
@@ -136,16 +136,14 @@
             <!-- <video width="700" height="400" controls muted loop style="border-radius: 25px;">
                     <source src="Images/Product.mov" type="video/mp4">
                 </video> -->
-                <!-- width="740" height="415" -->
-                <!--  style="display: block; margin: 40px auto; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.2);" -->
+            <!-- width="740" height="415" -->
+            <!--  style="display: block; margin: 40px auto; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.2);" -->
             <div class="video-wrapper">
-        <iframe src="https://www.youtube.com/embed/TeevH7uE9VM?si=Udwdq3w1tFOKeYDF"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen>
-        </iframe>
-    </div>
+                <iframe src="https://www.youtube.com/embed/TeevH7uE9VM?si=Udwdq3w1tFOKeYDF" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                </iframe>
+            </div>
             <p>Watch how our Machine transforms garden maintenance</p>
         </div>
     </section>
@@ -232,6 +230,20 @@
             </div>
         </div>
     </footer>
+    <div id="chatbot-container" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; align-items: flex-end;">
+        <div id="chatbox" style="position: absolute; right: 70px; bottom: 0; display: none; flex-direction: column;">
+            <div id="chatbox-header">
+                <i class="fas fa-leaf"></i> Salubrious Chatbot
+            </div>
+            <div id="chat-messages"></div>
+            <div id="chatbox-inputbar">
+                <input type="text" id="user-input" placeholder="Ask me anything..." autocomplete="off" />
+                <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <button id="chat-toggle" onclick="toggleChat()">💬</button>
+    </div>
+
     <script>
         const hamburger = document.querySelector('.hamburger');
         const navLinks = document.querySelector('.nav-links');
@@ -249,6 +261,97 @@
                 hamburger.classList.remove('toggle');
             });
         });
+
+        document.addEventListener("DOMContentLoaded", () => {
+    const chatbox = document.getElementById("chatbox");
+    const chatMessages = document.getElementById("chat-messages");
+    const userInput = document.getElementById("user-input");
+
+    // Toggle visibility of the chatbot window with greeting
+    window.toggleChat = function () {
+        if (chatbox.style.display === "flex") {
+            chatbox.style.display = "none";
+        } else {
+            chatbox.style.display = "flex";
+            // Show greeting only if no messages yet
+            if (!chatMessages.hasChildNodes()) {
+                appendMessage("bot", `<b>Welcome to Salubrious Chatbot! 🌿</b><br>How can I help you with our Leaf Collection Machine today? <br><small>Ask about features, benefits, pricing, or anything else!</small>`);
+            }
+        }
+    }
+
+    // Allow sending message with Enter key
+    userInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            window.sendMessage();
+        }
+    });
+
+    // Send message to Groq API
+    window.sendMessage = async function () {
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        appendMessage("user", message);
+        userInput.value = "";
+
+        // Check for farewells and handle on frontend
+        const farewellPattern = /^(bye|goodbye|see you|see ya|farewell|thanks|thank you)[.! ]*$/i;
+        if (farewellPattern.test(message)) {
+            appendMessage("bot", "Goodbye.");
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message })
+            });
+
+            const data = await response.json();
+
+            if (!data.choices || !data.choices[0]) {
+                appendMessage("bot", "Error: Invalid response from Groq.");
+                return;
+            }
+
+            const reply = data.choices[0].message.content.trim();
+            appendMessage("bot", reply);
+        } catch (error) {
+            appendMessage("bot", "Oops! Something went wrong.");
+            console.error("Chatbot error:", error);
+        }
+    }
+
+    // Display message in chat window with avatars and bubbles
+    function appendMessage(sender, text) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `chat-message ${sender}`;
+        const avatar = document.createElement("div");
+        avatar.className = "avatar";
+        if (sender === "user") {
+            avatar.innerHTML = '<i class="fas fa-user"></i>';
+        } else {
+            avatar.innerHTML = '<i class="fas fa-leaf"></i>';
+        }
+        const bubble = document.createElement("div");
+        bubble.className = "chat-bubble";
+        bubble.innerHTML = text;
+        if (sender === "user") {
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(bubble);
+        } else {
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(bubble);
+        }
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+});
     </script>
 </body>
 
