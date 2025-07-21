@@ -38,10 +38,9 @@ Specifications:
 
 How It Works:
 1. Open the hopper lid and load fresh, clean leaves.
-2. Select the leaf type on the touchscreen interface (e.g., Tulsi, Neem, Moringa).
-3. Choose “Auto” or “Manual” peaking mode.
-4. Press START. The smart sensors detect leaf size and moisture and adjust peeling speed and pressure.
-5. Within 3–5 minutes, the cleanly separated leaves collect in the output tray.
+2. Choose “Auto” or “Manual” peaking mode.
+3. Press START. The smart sensors detect leaf size and moisture and adjust peeling speed and pressure.
+4. Within 3–5 minutes, the cleanly separated leaves collect in the output tray.
 
 Safety Features:
 - Auto shut-off when lid is open
